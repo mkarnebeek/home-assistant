@@ -39,9 +39,6 @@ class RingConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     async def async_step_user(self, user_input=None):
         """Handle the initial step."""
-        if self._async_current_entries():
-            return self.async_abort(reason="already_configured")
-
         errors = {}
         if user_input is not None:
             try:
@@ -77,13 +74,6 @@ class RingConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return self.async_show_form(
             step_id="2fa", data_schema=vol.Schema({"2fa": str}),
         )
-
-    async def async_step_import(self, user_input):
-        """Handle import."""
-        if self._async_current_entries():
-            return self.async_abort(reason="already_configured")
-
-        return await self.async_step_user(user_input)
 
 
 class Require2FA(exceptions.HomeAssistantError):
